@@ -25,7 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install mlflow==2.19.0 pandas scikit-learn
+          # Menggunakan MLflow terbaru untuk menghindari bug build-docker Python 3.9
+          pip install mlflow pandas scikit-learn
 
       - name: Run mlflow project
         run: |
@@ -41,8 +42,8 @@ jobs:
           
       - name: Install Python dependencies
         run: |
-          # Tahapan tambahan sesuai checklist Dicoding
-          echo "Dependencies MLflow project sudah terinstall di env lokal"
+          # Tahapan tambahan wajib sesuai checklist Dicoding
+          python -m pip install --upgrade pip
           
       - name: Upload to GitHub
         uses: actions/upload-artifact@v4
@@ -52,12 +53,8 @@ jobs:
           
       - name: Build Docker Model
         run: |
-          # [Trik Fix Error Python 3.9 get-pip.py]
-          # Kita ubah paksa tulisan python3.9 menjadi python3.10 di dalam library mlflow!
-          MLFLOW_DIR=$(python -c "import mlflow, os; print(os.path.dirname(mlflow.__file__))")
-          sed -i 's/python3.9/python3.10/g' $MLFLOW_DIR/models/docker_utils.py
-          
           cd MLProject
+          # Perintah ini sekarang akan menggunakan template Docker dari MLflow versi terbaru
           mlflow models build-docker -m "runs:/${{ env.RUN_ID }}/model" -n titanic-model:latest
           
       - name: Log in to Docker Hub
