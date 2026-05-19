@@ -24,9 +24,8 @@ jobs:
 
       - name: Run MLProject
         run: |
-          # Pindah ke dalam folder MLProject dan jalankan mlflow run
           cd MLProject
-          mlflow run . --no-conda
+          mlflow run . --env-manager=local
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -45,7 +44,6 @@ jobs:
           cd MLProject
           RUN_ID=$(cat run_id.txt)
           echo "Building Docker image for Run ID: $RUN_ID"
-          # Fungsi MLflow untuk membuat Docker Image otomatis dari model!
           mlflow models build-docker -m "runs:/$RUN_ID/model" -n ${{ secrets.DOCKER_USERNAME }}/titanic-model:latest
           
       - name: Push Docker Image to Docker Hub
