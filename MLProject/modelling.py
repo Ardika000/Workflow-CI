@@ -21,5 +21,3 @@ with mlflow.start_run(run_name="CI_Random_Forest") as run:
     
     with open("run_id.txt", "w") as f:
         f.write(run.info.run_id)
-
-print(f"Training CI selesai! Run ID: {run.info.run_id}")
