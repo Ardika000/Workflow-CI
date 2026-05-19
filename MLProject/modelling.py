@@ -5,8 +5,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 import os
 
-mlflow.set_tracking_uri("sqlite:///mlflow.db") 
-mlflow.set_experiment("CI_Titanic_Experiment")
 mlflow.sklearn.autolog()
 
 df = pd.read_csv('titanic_preprocessing.csv')
